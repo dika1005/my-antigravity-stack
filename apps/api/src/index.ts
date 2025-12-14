@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
-import { openapi } from "@elysiajs/openapi";
+import { swagger } from "@elysiajs/swagger";
 import { authRoutes } from "./auth";
 import { galleryRoutes } from "./gallery";
 import { imageRoutes } from "./image";
@@ -18,7 +18,7 @@ const app = new Elysia({ prefix: "/api" })
     })
   )
   .use(
-    openapi({
+    swagger({
       documentation: {
         info: {
           title: "Gallery API",
@@ -50,5 +50,6 @@ const app = new Elysia({ prefix: "/api" })
   .listen(8080);
 
 console.log(`🦊 Server running at http://localhost:${app.server?.port}`);
+console.log(`📚 Swagger docs at http://localhost:${app.server?.port}/api/swagger`);
 
 export type App = typeof app;
