@@ -6,7 +6,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts",
+    "test": "bun test",
+    "test:watch": "bun test --watch"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
