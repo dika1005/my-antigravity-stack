@@ -1,9 +1,9 @@
-import { Elysia } from "elysia";
+import { Elysia, t } from "elysia";
 import { jwt } from "@elysiajs/jwt";
 
 /**
  * Auth Middleware Plugin
- * Provides JWT authentication for Elysia routes
+ * Provides JWT authentication for Elysia routes - reads from cookies
  */
 export const authMiddleware = new Elysia({ name: "auth" })
     .use(
@@ -13,15 +13,14 @@ export const authMiddleware = new Elysia({ name: "auth" })
             exp: "15m",
         })
     )
-    .derive(async ({ jwt, headers }) => {
-        const authHeader = headers.authorization;
+    .derive({ as: "global" }, async ({ jwt, cookie }) => {
+        const token = cookie.accessToken?.value;
 
-        if (!authHeader?.startsWith("Bearer ")) {
+        if (!token || typeof token !== "string") {
             return { user: null };
         }
 
         try {
-            const token = authHeader.substring(7);
             const payload = await jwt.verify(token);
 
             if (!payload) return { user: null };
