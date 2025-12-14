@@ -9,7 +9,7 @@ import { logoutController } from "./logout/logout.controller";
  * Auth Routes Aggregator
  * Combines all auth-related routes under /auth prefix
  */
-export const authRoutes = new Elysia({ prefix: "api/auth" })
+export const authRoutes = new Elysia({ prefix: "/auth" })
     .use(registerController)  // POST /api/auth/register
     .use(verifyController)    // POST /api/auth/verify
     .use(loginController)     // POST /api/auth/login

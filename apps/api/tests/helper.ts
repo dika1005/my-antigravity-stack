@@ -64,10 +64,21 @@ export async function cleanupTestData() {
 export function getCookieValue(setCookieHeader: string | string[] | null, name: string): string | null {
     if (!setCookieHeader) return null;
 
-    const cookies = Array.isArray(setCookieHeader) ? setCookieHeader : [setCookieHeader];
+    // Handle both string and array formats
+    const cookies = Array.isArray(setCookieHeader)
+        ? setCookieHeader
+        : setCookieHeader.split(/,(?=\s*\w+=)/); // Split on comma followed by cookie name
+
     for (const cookie of cookies) {
-        if (cookie.startsWith(`${name}=`)) {
-            const value = cookie.split(";")[0]?.split("=")[1];
+        const trimmed = cookie.trim();
+        // Match cookie name at start or after comma/space
+        const match = trimmed.match(new RegExp(`(?:^|;\\s*)${name}=([^;]+)`));
+        if (match) {
+            return match[1] || null;
+        }
+        // Also check if cookie starts with the name
+        if (trimmed.startsWith(`${name}=`)) {
+            const value = trimmed.split(";")[0]?.split("=")[1];
             return value || null;
         }
     }

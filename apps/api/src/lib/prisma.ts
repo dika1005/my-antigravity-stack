@@ -1,13 +1,18 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
-// Create Prisma adapter with connection string or config
+// Validate required environment variables
+if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD || !process.env.DB_NAME) {
+    throw new Error("Missing required database environment variables: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME");
+}
+
+// Create Prisma adapter with config from environment
 const adapter = new PrismaMariaDb({
-    host: process.env.DB_HOST || "localhost",
+    host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT || "3306"),
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "",
-    database: process.env.DB_NAME || "gallery",
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
 
 // Singleton pattern untuk Prisma Client
