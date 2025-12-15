@@ -1,4 +1,4 @@
-# 🖼️ Gallery API
+s# 🖼️ Gallery API
 
 A modern, high-performance REST API for image gallery management built with cutting-edge technologies.
 

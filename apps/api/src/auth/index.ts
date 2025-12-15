@@ -4,6 +4,7 @@ import { verifyController } from "./verify/verify.controller";
 import { loginController } from "./login/login.controller";
 import { refreshController } from "./refresh/refresh.controller";
 import { logoutController } from "./logout/logout.controller";
+import { googleController } from "./google/google.controller";
 
 /**
  * Auth Routes Aggregator
@@ -14,4 +15,6 @@ export const authRoutes = new Elysia({ prefix: "/auth" })
     .use(verifyController)    // POST /api/auth/verify
     .use(loginController)     // POST /api/auth/login
     .use(refreshController)   // POST /api/auth/refresh
-    .use(logoutController);   // POST /api/auth/logout
+    .use(logoutController)    // POST /api/auth/logout
+    .use(googleController);   // GET  /api/auth/google, /api/auth/google/callback
+

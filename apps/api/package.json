@@ -13,6 +13,7 @@
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/bun": "latest",
+    "@types/nodemailer": "^7.0.4",
     "dotenv": "^17.2.3",
     "prisma": "7.1.0"
   },
@@ -29,6 +30,7 @@
     "bcrypt": "^6.0.0",
     "elysia": "^1.4.19",
     "mariadb": "^3.4.5",
+    "nodemailer": "^7.0.11",
     "prismabox": "^1.1.26"
   }
 }
