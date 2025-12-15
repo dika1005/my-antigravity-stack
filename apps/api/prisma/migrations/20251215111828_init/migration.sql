@@ -139,18 +139,22 @@ CREATE TABLE `tags` (
 
 -- CreateTable
 CREATE TABLE `tags_on_galleries` (
+    `id` VARCHAR(191) NOT NULL,
     `galleryId` VARCHAR(191) NOT NULL,
     `tagId` VARCHAR(191) NOT NULL,
 
-    PRIMARY KEY (`galleryId`, `tagId`)
+    UNIQUE INDEX `tags_on_galleries_galleryId_tagId_key`(`galleryId`, `tagId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `tags_on_images` (
+    `id` VARCHAR(191) NOT NULL,
     `imageId` VARCHAR(191) NOT NULL,
     `tagId` VARCHAR(191) NOT NULL,
 
-    PRIMARY KEY (`imageId`, `tagId`)
+    UNIQUE INDEX `tags_on_images_imageId_tagId_key`(`imageId`, `tagId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
