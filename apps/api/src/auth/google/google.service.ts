@@ -69,6 +69,12 @@ export const googleService = {
             });
 
             if (!tokenResponse.ok) {
+                const errorBody = await tokenResponse.text();
+                console.error("Google token exchange failed:", {
+                    status: tokenResponse.status,
+                    statusText: tokenResponse.statusText,
+                    body: errorBody,
+                });
                 return { success: false, message: "Gagal mendapatkan token dari Google" };
             }
 

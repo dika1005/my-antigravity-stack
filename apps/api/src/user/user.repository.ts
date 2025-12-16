@@ -31,4 +31,42 @@ export const userRepository = {
             where: { userId, ...(isOwner ? {} : { isPublic: true }) },
         });
     },
+
+    findByIdPublic: async (id: string) => {
+        const user = await prisma.user.findUnique({
+            where: { id, isActive: true },
+            select: {
+                id: true,
+                name: true,
+                avatar: true,
+                bio: true,
+                createdAt: true,
+                _count: {
+                    select: {
+                        galleries: { where: { isPublic: true } },
+                    },
+                },
+            },
+        });
+
+        if (!user) return null;
+
+        // Get total likes received on user's galleries
+        const totalLikes = await prisma.like.count({
+            where: {
+                gallery: {
+                    userId: id,
+                    isPublic: true,
+                },
+            },
+        });
+
+        return {
+            ...user,
+            stats: {
+                galleries: user._count.galleries,
+                totalLikes,
+            },
+        };
+    },
 };

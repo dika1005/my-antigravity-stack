@@ -72,6 +72,7 @@ model User {
   images             Image[]
   comments           Comment[]
   likes              Like[]
+  bookmarks          Bookmark[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -149,10 +150,11 @@ model Gallery {
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
-  images   Image[]
-  tags     TagsOnGalleries[]
-  comments Comment[]
-  likes    Like[]
+  images    Image[]
+  tags      TagsOnGalleries[]
+  comments  Comment[]
+  likes     Like[]
+  bookmarks Bookmark[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -182,9 +184,10 @@ model Image {
   userId    String
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  tags     TagsOnImages[]
-  comments Comment[]
-  likes    Like[]
+  tags      TagsOnImages[]
+  comments  Comment[]
+  likes     Like[]
+  bookmarks Bookmark[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -291,4 +294,32 @@ model Like {
   @@index([galleryId])
   @@index([imageId])
   @@map("likes")
+}
+
+// ==========================================
+// BOOKMARKS (Polymorphic - Gallery & Image)
+// ==========================================
+
+model Bookmark {
+  id String @id @default(uuid())
+
+  // User yang bookmark
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Polymorphic relation (bookmark bisa di Gallery atau Image)
+  galleryId String?
+  gallery   Gallery? @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  imageId   String?
+  image     Image?   @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  // Ensure user can only bookmark once per gallery/image
+  @@unique([userId, galleryId])
+  @@unique([userId, imageId])
+  @@index([userId])
+  @@index([galleryId])
+  @@index([imageId])
+  @@map("bookmarks")
 }

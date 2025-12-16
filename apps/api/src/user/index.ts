@@ -32,6 +32,21 @@ export const userRoutes = new Elysia({ prefix: "/user" })
         }
     )
     .get(
+        "/:id",
+        async ({ params, set }) => {
+            const user = await userRepository.findByIdPublic(params.id);
+            if (!user) {
+                set.status = 404;
+                return error("User tidak ditemukan");
+            }
+            return success(user);
+        },
+        {
+            params: t.Object({ id: t.String() }),
+            detail: { tags: ["User"], summary: "Get public user profile" },
+        }
+    )
+    .get(
         "/:id/galleries",
         async ({ params, query, user }) => {
             const page = query.page || 1;

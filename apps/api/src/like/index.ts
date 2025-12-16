@@ -80,4 +80,36 @@ export const likeRoutes = new Elysia({ prefix: "/like" })
             params: t.Object({ id: t.String() }),
             detail: { tags: ["Like"], summary: "Unlike image" },
         }
+    )
+    // Like status check endpoints
+    .get(
+        "/gallery/:id/status",
+        async ({ params, user, set }) => {
+            if (!user) { set.status = 401; return unauthorized(); }
+
+            const existing = await likeRepository.findByUserAndGallery(user.id, params.id);
+            const count = await likeRepository.countByGallery(params.id);
+            return success({ liked: !!existing, count });
+        },
+        {
+            requireAuth: true,
+            params: t.Object({ id: t.String() }),
+            detail: { tags: ["Like"], summary: "Check gallery like status" },
+        }
+    )
+    .get(
+        "/image/:id/status",
+        async ({ params, user, set }) => {
+            if (!user) { set.status = 401; return unauthorized(); }
+
+            const existing = await likeRepository.findByUserAndImage(user.id, params.id);
+            const count = await likeRepository.countByImage(params.id);
+            return success({ liked: !!existing, count });
+        },
+        {
+            requireAuth: true,
+            params: t.Object({ id: t.String() }),
+            detail: { tags: ["Like"], summary: "Check image like status" },
+        }
     );
+

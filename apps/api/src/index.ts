@@ -10,6 +10,8 @@ import { likeRoutes } from "./like";
 import { commentRoutes } from "./comment";
 import { tagRoutes } from "./tag";
 import { feedRoutes } from "./feed";
+import { searchRoutes } from "./search";
+import { bookmarkRoutes } from "./bookmark";
 
 const app = new Elysia({ prefix: "/api" })
   .use(
@@ -36,6 +38,8 @@ const app = new Elysia({ prefix: "/api" })
           { name: "Comment", description: "Comment management endpoints" },
           { name: "Tag", description: "Tag management endpoints" },
           { name: "Feed", description: "Feed endpoints" },
+          { name: "Search", description: "Global search endpoints" },
+          { name: "Bookmark", description: "Bookmark/save endpoints" },
         ],
       },
     })
@@ -50,6 +54,8 @@ const app = new Elysia({ prefix: "/api" })
   .use(commentRoutes)
   .use(tagRoutes)
   .use(feedRoutes)
+  .use(searchRoutes)
+  .use(bookmarkRoutes)
   .listen(8080);
 
 console.log(`🦊 Server running at http://localhost:${app.server?.port}`);
