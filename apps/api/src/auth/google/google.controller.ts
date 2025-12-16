@@ -79,7 +79,7 @@ export const googleController = new Elysia({ prefix: "/google" })
 
             // Redirect to frontend with success
             const redirectUrl = result.data!.isNewUser
-                ? `${process.env.FRONTEND_URL || "http://localhost:3000"}/welcome`
+                ? `${process.env.FRONTEND_URL || "http://localhost:3000"}/`
                 : `${process.env.FRONTEND_URL || "http://localhost:3000"}/`;
 
             return redirect(redirectUrl);
