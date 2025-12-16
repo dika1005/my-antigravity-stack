@@ -1,2 +1,2 @@
 // Layout Components
-export { Navbar } from './Navbar';
+export { Navbar } from './Navbar'

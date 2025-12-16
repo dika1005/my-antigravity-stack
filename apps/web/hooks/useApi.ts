@@ -18,11 +18,10 @@ export const useGetUsers = () => {
         if (error) throw new Error(String(error.value))
         if (data) setUsers(data as User[])
         */
-       
-        // Simulasi sukses dulu biar gak loading terus
-        console.log("Hooks ready! Menunggu endpoint /users di backend...")
-        setLoading(false)
 
+        // Simulasi sukses dulu biar gak loading terus
+        console.log('Hooks ready! Menunggu endpoint /users di backend...')
+        setLoading(false)
       } catch (err) {
         setError('Error fetching data')
         setLoading(false)

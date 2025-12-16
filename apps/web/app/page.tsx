@@ -30,12 +30,12 @@ export default function Home() {
     <main className="min-h-screen bg-black">
       {/* Spacer for navbar */}
       <div className="h-4" />
-      
+
       {/* Category Filter Section */}
       <div className="sticky top-16 z-40">
         {/* Gradient fade effect at top */}
         <div className="absolute inset-x-0 -top-4 h-8 bg-gradient-to-b from-black to-transparent pointer-events-none" />
-        
+
         <div className="relative bg-black/60 backdrop-blur-2xl border-b border-white/5">
           <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <CategoryFilter
@@ -46,7 +46,7 @@ export default function Home() {
             />
           </div>
         </div>
-        
+
         {/* Gradient fade effect at bottom */}
         <div className="absolute inset-x-0 -bottom-6 h-6 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
       </div>

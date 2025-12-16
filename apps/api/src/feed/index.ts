@@ -1,5 +1,4 @@
-import { Elysia } from "elysia";
-import { feedController } from "./feed.controller";
+import { Elysia } from 'elysia'
+import { feedController } from './feed.controller'
 
-export const feedRoutes = new Elysia()
-    .use(feedController);
+export const feedRoutes = new Elysia().use(feedController)

@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Generated
+*.d.ts
+generated/
+prismabox/
+
+# Misc
+.turbo/
+*.log

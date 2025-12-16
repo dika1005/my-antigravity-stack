@@ -12,13 +12,13 @@ A modern, high-performance REST API for image gallery management built with cutt
 
 ## 🚀 Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| **[Bun](https://bun.sh)** | Ultra-fast JavaScript runtime & package manager |
-| **[Elysia](https://elysiajs.com)** | Type-safe, ergonomic web framework |
-| **[Prisma](https://prisma.io)** | Next-generation ORM for database access |
-| **[MariaDB](https://mariadb.org)** | Reliable relational database |
-| **[Swagger](https://swagger.io)** | Interactive API documentation |
+| Technology                         | Purpose                                         |
+| ---------------------------------- | ----------------------------------------------- |
+| **[Bun](https://bun.sh)**          | Ultra-fast JavaScript runtime & package manager |
+| **[Elysia](https://elysiajs.com)** | Type-safe, ergonomic web framework              |
+| **[Prisma](https://prisma.io)**    | Next-generation ORM for database access         |
+| **[MariaDB](https://mariadb.org)** | Reliable relational database                    |
+| **[Swagger](https://swagger.io)**  | Interactive API documentation                   |
 
 ---
 
@@ -48,12 +48,14 @@ apps/api/
 ## ✨ Features
 
 ### 🔐 Authentication
+
 - **Email verification** - Secure registration with email confirmation
 - **JWT tokens** - Access + Refresh token strategy
 - **HttpOnly cookies** - Secure token storage
 - **Role-based access** - USER and ADMIN roles
 
 ### 🖼️ Gallery Management
+
 - Create, read, update, delete galleries
 - Public/private visibility
 - Category organization
@@ -61,12 +63,14 @@ apps/api/
 - View count tracking
 
 ### 📸 Image Handling
+
 - Upload images to galleries
 - Metadata support (title, description, dimensions)
 - Thumbnail generation ready
 - Owner-only modifications
 
 ### 💬 Social Features
+
 - **Comments** - Nested replies support
 - **Likes** - For both galleries and images
 - **Tags** - Organize content with tags
@@ -137,71 +141,78 @@ bun test
 
 Once the server is running, access the interactive Swagger documentation:
 
-| Endpoint | Description |
-|----------|-------------|
-| `http://localhost:8080/api/swagger` | Swagger UI - Interactive playground |
-| `http://localhost:8080/api/swagger/json` | OpenAPI specification (JSON) |
+| Endpoint                                 | Description                         |
+| ---------------------------------------- | ----------------------------------- |
+| `http://localhost:8080/api/swagger`      | Swagger UI - Interactive playground |
+| `http://localhost:8080/api/swagger/json` | OpenAPI specification (JSON)        |
 
 ---
 
 ## 🔗 API Endpoints
 
 ### Authentication
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register new user |
-| POST | `/api/auth/verify` | Verify email with token |
-| POST | `/api/auth/login` | Login and get tokens |
-| POST | `/api/auth/refresh` | Refresh access token |
-| POST | `/api/auth/logout` | Logout and revoke tokens |
+
+| Method | Endpoint             | Description              |
+| ------ | -------------------- | ------------------------ |
+| POST   | `/api/auth/register` | Register new user        |
+| POST   | `/api/auth/verify`   | Verify email with token  |
+| POST   | `/api/auth/login`    | Login and get tokens     |
+| POST   | `/api/auth/refresh`  | Refresh access token     |
+| POST   | `/api/auth/logout`   | Logout and revoke tokens |
 
 ### Galleries
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/gallery` | List public galleries |
-| GET | `/api/gallery/:slug` | Get gallery detail |
-| POST | `/api/gallery` | Create gallery 🔒 |
-| PATCH | `/api/gallery/:id` | Update gallery 🔒 |
-| DELETE | `/api/gallery/:id` | Delete gallery 🔒 |
+
+| Method | Endpoint             | Description           |
+| ------ | -------------------- | --------------------- |
+| GET    | `/api/gallery`       | List public galleries |
+| GET    | `/api/gallery/:slug` | Get gallery detail    |
+| POST   | `/api/gallery`       | Create gallery 🔒     |
+| PATCH  | `/api/gallery/:id`   | Update gallery 🔒     |
+| DELETE | `/api/gallery/:id`   | Delete gallery 🔒     |
 
 ### Images
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/image` | Upload image 🔒 |
-| PATCH | `/api/image/:id` | Update image 🔒 |
+
+| Method | Endpoint         | Description     |
+| ------ | ---------------- | --------------- |
+| POST   | `/api/image`     | Upload image 🔒 |
+| PATCH  | `/api/image/:id` | Update image 🔒 |
 | DELETE | `/api/image/:id` | Delete image 🔒 |
 
 ### Categories
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/category` | List categories |
-| POST | `/api/category` | Create category 👑 |
-| PATCH | `/api/category/:id` | Update category 👑 |
+
+| Method | Endpoint            | Description        |
+| ------ | ------------------- | ------------------ |
+| GET    | `/api/category`     | List categories    |
+| POST   | `/api/category`     | Create category 👑 |
+| PATCH  | `/api/category/:id` | Update category 👑 |
 | DELETE | `/api/category/:id` | Delete category 👑 |
 
 ### Users
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/user/me` | Get my profile 🔒 |
-| PATCH | `/api/user/me` | Update my profile 🔒 |
-| GET | `/api/user/:id/galleries` | Get user's galleries |
+
+| Method | Endpoint                  | Description          |
+| ------ | ------------------------- | -------------------- |
+| GET    | `/api/user/me`            | Get my profile 🔒    |
+| PATCH  | `/api/user/me`            | Update my profile 🔒 |
+| GET    | `/api/user/:id/galleries` | Get user's galleries |
 
 ### Likes & Comments
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/like/gallery/:id` | Like gallery 🔒 |
-| DELETE | `/api/like/gallery/:id` | Unlike gallery 🔒 |
-| POST | `/api/like/image/:id` | Like image 🔒 |
-| DELETE | `/api/like/image/:id` | Unlike image 🔒 |
-| GET | `/api/comment/gallery/:id` | Get gallery comments |
-| POST | `/api/comment/gallery/:id` | Add comment 🔒 |
-| DELETE | `/api/comment/:id` | Delete comment 🔒 |
+
+| Method | Endpoint                   | Description          |
+| ------ | -------------------------- | -------------------- |
+| POST   | `/api/like/gallery/:id`    | Like gallery 🔒      |
+| DELETE | `/api/like/gallery/:id`    | Unlike gallery 🔒    |
+| POST   | `/api/like/image/:id`      | Like image 🔒        |
+| DELETE | `/api/like/image/:id`      | Unlike image 🔒      |
+| GET    | `/api/comment/gallery/:id` | Get gallery comments |
+| POST   | `/api/comment/gallery/:id` | Add comment 🔒       |
+| DELETE | `/api/comment/:id`         | Delete comment 🔒    |
 
 ### Tags
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/tag` | List all tags |
-| POST | `/api/tag` | Create tag 🔒 |
+
+| Method | Endpoint   | Description   |
+| ------ | ---------- | ------------- |
+| GET    | `/api/tag` | List all tags |
+| POST   | `/api/tag` | Create tag 🔒 |
 
 > 🔒 = Requires authentication  
 > 👑 = Requires admin role

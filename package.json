@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "turbo dev --ui tui; exit 0",
     "build": "turbo build",
-    "lint": "turbo lint"
+    "lint": "turbo lint",
+    "format": "prettier --write \"apps/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"apps/**/*.{ts,tsx,js,jsx,json,css,md}\""
   },
   "workspaces": [
     "apps/*",
@@ -14,6 +16,7 @@
   ],
   "devDependencies": {
     "bun-types": "latest",
+    "prettier": "^3.7.4",
     "turbo": "^2.6.3"
   }
 }

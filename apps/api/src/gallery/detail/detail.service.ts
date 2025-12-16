@@ -1,21 +1,21 @@
-import { galleryRepository } from "../gallery.repository";
+import { galleryRepository } from '../gallery.repository'
 
 export const detailService = {
-    getBySlug: async (slug: string) => {
-        const gallery = await galleryRepository.findBySlug(slug);
+  getBySlug: async (slug: string) => {
+    const gallery = await galleryRepository.findBySlug(slug)
 
-        if (!gallery) {
-            return { success: false, message: "Gallery tidak ditemukan" };
-        }
+    if (!gallery) {
+      return { success: false, message: 'Gallery tidak ditemukan' }
+    }
 
-        // Only show if public
-        if (!gallery.isPublic) {
-            return { success: false, message: "Gallery tidak ditemukan" };
-        }
+    // Only show if public
+    if (!gallery.isPublic) {
+      return { success: false, message: 'Gallery tidak ditemukan' }
+    }
 
-        // Increment view count
-        await galleryRepository.incrementView(gallery.id);
+    // Increment view count
+    await galleryRepository.incrementView(gallery.id)
 
-        return { success: true, gallery };
-    },
-};
+    return { success: true, gallery }
+  },
+}
