@@ -9,6 +9,7 @@ import { userRoutes } from "./user";
 import { likeRoutes } from "./like";
 import { commentRoutes } from "./comment";
 import { tagRoutes } from "./tag";
+import { feedRoutes } from "./feed";
 
 const app = new Elysia({ prefix: "/api" })
   .use(
@@ -34,6 +35,7 @@ const app = new Elysia({ prefix: "/api" })
           { name: "Like", description: "Like/Unlike endpoints" },
           { name: "Comment", description: "Comment management endpoints" },
           { name: "Tag", description: "Tag management endpoints" },
+          { name: "Feed", description: "Feed endpoints" },
         ],
       },
     })
@@ -47,6 +49,7 @@ const app = new Elysia({ prefix: "/api" })
   .use(likeRoutes)
   .use(commentRoutes)
   .use(tagRoutes)
+  .use(feedRoutes)
   .listen(8080);
 
 console.log(`🦊 Server running at http://localhost:${app.server?.port}`);
