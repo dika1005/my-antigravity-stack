@@ -13,8 +13,27 @@ export const imageRepository = {
     findByIdWithDetails: (id: string) =>
         prisma.image.findUnique({
             where: { id },
-            include: {
-                user: { select: { id: true, name: true, avatar: true } },
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                filename: true,
+                url: true,
+                thumbnailUrl: true,
+                mimeType: true,
+                size: true,
+                width: true,
+                height: true,
+                viewCount: true,
+                createdAt: true,
+                updatedAt: true,
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        avatar: true,
+                    },
+                },
                 gallery: {
                     select: {
                         id: true,
@@ -53,7 +72,7 @@ export const imageRepository = {
                         category: { select: { id: true, name: true, slug: true } },
                     },
                 },
-                _count: { select: { likes: true } },
+                _count: { select: { likes: true, comments: true } },
             },
             take: Math.ceil(limit / 2),
             orderBy: { createdAt: "desc" },

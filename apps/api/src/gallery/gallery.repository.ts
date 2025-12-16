@@ -47,18 +47,21 @@ export const galleryRepository = {
     },
 
     // ==================== DETAIL ====================
-    findBySlug: (slug: string) =>
-        prisma.gallery.findUnique({
-            where: { slug },
-            include: {
-                user: { select: { id: true, name: true, avatar: true } },
-                category: { select: { id: true, name: true, slug: true } },
-                images: { orderBy: { createdAt: "desc" } },
-                tags: { include: { tag: true } },
-                _count: { select: { likes: true, comments: true } },
-            },
-        }),
-
+findBySlug: (slug: string) =>
+    prisma.gallery.findUnique({
+        where: { slug },
+        include: {
+            user: { select: { id: true, name: true, avatar: true } },
+            category: { select: { id: true, name: true, slug: true } },
+            images: { orderBy: { createdAt: "desc" } },
+            tags: { include: { tag: true } },
+            _count: { select: { likes: true, comments: true } },
+        },
+    }).then(gallery => {
+        // viewCount sudah otomatis included karena pakai include (bukan select)
+        return gallery;
+    }),
+    
     findById: (id: string) =>
         prisma.gallery.findUnique({
             where: { id },
