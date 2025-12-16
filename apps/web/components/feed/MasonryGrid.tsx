@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Image from 'next/image'
+import { LikeButton } from '@/components/common'
 
 interface FeedImage {
     id: string
@@ -90,10 +91,13 @@ function ImageCard({ image, onClick }: { image: FeedImage; onClick?: () => void 
                                 {image.user.name || 'Anonymous'}
                             </span>
                         </div>
-                        <div className="flex items-center gap-1 text-gray-300">
-                            <HeartIcon />
-                            <span className="text-xs">{image._count.likes}</span>
-                        </div>
+                        <LikeButton
+                            target="image"
+                            targetId={image.id}
+                            initialCount={image._count.likes}
+                            size="sm"
+                            variant="overlay"
+                        />
                     </div>
                 </div>
 

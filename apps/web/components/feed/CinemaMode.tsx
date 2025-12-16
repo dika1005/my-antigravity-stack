@@ -3,6 +3,7 @@
 import { useEffect, useCallback, useState, useRef } from 'react'
 import Image from 'next/image'
 import { useImageDetail } from '@/hooks/useImageDetail'
+import { LikeButton, CommentSection } from '@/components/common'
 
 interface CinemaModeProps {
     imageId: string | null
@@ -14,6 +15,7 @@ export function CinemaMode({ imageId, onClose, onImageSelect }: CinemaModeProps)
     const { image, relatedImages, loading } = useImageDetail(imageId)
     const [isVisible, setIsVisible] = useState(false)
     const [imageLoaded, setImageLoaded] = useState(false)
+    const [showComments, setShowComments] = useState(false)
     const modalRef = useRef<HTMLDivElement>(null)
 
     // Animation on mount
@@ -90,6 +92,7 @@ export function CinemaMode({ imageId, onClose, onImageSelect }: CinemaModeProps)
             <button
                 onClick={handleClose}
                 className="absolute top-4 right-4 z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 group"
+                aria-label="Close"
             >
                 <svg className="w-6 h-6 text-white group-hover:rotate-90 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -176,14 +179,26 @@ export function CinemaMode({ imageId, onClose, onImageSelect }: CinemaModeProps)
                                 </div>
 
                                 <div className="flex items-center gap-4 text-sm text-gray-300">
-                                    <span className="flex items-center gap-1">
-                                        <HeartIcon />
-                                        {image._count.likes}
-                                    </span>
-                                    <span className="flex items-center gap-1">
+                                    <LikeButton
+                                        target="image"
+                                        targetId={image.id}
+                                        initialCount={image._count.likes}
+                                        size="sm"
+                                        variant="minimal"
+                                    />
+                                    <button
+                                        onClick={() => setShowComments(!showComments)}
+                                        className={`flex items-center gap-1 p-1.5 rounded-full transition-all duration-200 ${showComments
+                                            ? 'text-blue-400 bg-blue-500/20'
+                                            : 'text-gray-300 hover:text-blue-400 hover:bg-white/10'
+                                            }`}
+                                        aria-label="Toggle comments"
+                                    >
                                         <CommentIcon />
-                                        {image._count.comments}
-                                    </span>
+                                        <span className={`text-sm font-medium ${showComments ? 'text-blue-400' : ''}`}>
+                                            {image._count.comments}
+                                        </span>
+                                    </button>
                                     <span className="flex items-center gap-1">
                                         <EyeIcon />
                                         {image.viewCount}
@@ -200,6 +215,31 @@ export function CinemaMode({ imageId, onClose, onImageSelect }: CinemaModeProps)
                             </div>
                         </div>
 
+                        {/* Comment Panel - Right Side (toggle) */}
+                        {showComments && (
+                            <div className={`absolute top-4 right-16 bottom-32 w-80 transition-all duration-500 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'
+                                }`}>
+                                <div className="h-full bg-black/60 backdrop-blur-xl rounded-2xl p-4 border border-white/5 overflow-hidden">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-white font-semibold">Komentar</h3>
+                                        <button
+                                            onClick={() => setShowComments(false)}
+                                            className="p-1 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                                            aria-label="Close comments"
+                                        >
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <CommentSection
+                                        galleryId={image.gallery.id}
+                                        initialCount={image._count.comments}
+                                    />
+                                </div>
+                            </div>
+                        )}
+
                         {/* Related Images Carousel */}
                         {relatedImages.length > 0 && (
                             <div className={`relative px-4 pb-4 transition-all duration-500 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
@@ -211,6 +251,7 @@ export function CinemaMode({ imageId, onClose, onImageSelect }: CinemaModeProps)
                                             key={related.id}
                                             onClick={() => handleRelatedClick(related.id)}
                                             className="flex-shrink-0 group relative rounded-xl overflow-hidden transition-all duration-200 hover:scale-105 hover:ring-2 hover:ring-white/50"
+                                            aria-label={related.title || 'View related image'}
                                             style={{
                                                 width: '120px',
                                                 aspectRatio: related.width && related.height
@@ -239,7 +280,7 @@ export function CinemaMode({ imageId, onClose, onImageSelect }: CinemaModeProps)
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     )
 }
 
