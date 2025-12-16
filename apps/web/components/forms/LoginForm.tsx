@@ -4,7 +4,7 @@ import { useState, FormEvent } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Button, Input } from '@/components/ui'
-import { useLogin } from '@/hooks/useAuth'
+import { useAuthContext } from '@/contexts'
 import { authApi } from '@/lib/auth'
 
 interface LoginFormProps {
@@ -13,13 +13,15 @@ interface LoginFormProps {
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
     const router = useRouter()
-    const { login, isLoading, error } = useLogin()
+    const { login } = useAuthContext()
 
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     })
     const [formErrors, setFormErrors] = useState<Record<string, string>>({})
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
 
     const validateForm = () => {
         const errors: Record<string, string> = {}
@@ -43,12 +45,19 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
         if (!validateForm()) return
 
-        const result = await login(formData)
+        setIsLoading(true)
+        setError(null)
+
+        const result = await login(formData.email, formData.password)
 
         if (result.success) {
             onSuccess?.()
             router.push('/')
+        } else {
+            setError(result.message || 'Login failed')
         }
+
+        setIsLoading(false)
     }
 
     const handleGoogleLogin = () => {

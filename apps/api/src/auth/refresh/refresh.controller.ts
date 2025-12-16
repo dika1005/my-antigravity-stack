@@ -46,7 +46,10 @@ export const refreshController = new Elysia({ prefix: "/refresh" })
                 path: "/",
             });
 
-            return success(null, result.message);
+            // Return user data for frontend
+            return success({
+                user: result.data!.user,
+            }, result.message);
         },
         {
             cookie: t.Cookie({

@@ -1,39 +1,63 @@
-// apps/web/app/page.tsx
 'use client'
 
-import { useGetUsers } from '@/hooks/useApi'
-import { api } from '@/lib/api' // Kita tes koneksi root juga
+import { useState, useCallback } from 'react'
+import { useFeed } from '@/hooks/useFeed'
+import { useCategories } from '@/hooks/useCategories'
+import { MasonryGrid, CategoryFilter, CinemaMode } from '@/components/feed'
 
 export default function Home() {
-  const { users, loading } = useGetUsers()
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [selectedImageId, setSelectedImageId] = useState<string | null>(null)
+  const { categories, loading: categoriesLoading } = useCategories()
+  const { images, loading, loadingMore, hasMore, loadMore } = useFeed({
+    categoryId: selectedCategory || undefined,
+    limit: 20,
+  })
+
+  const handleImageClick = useCallback((imageId: string) => {
+    setSelectedImageId(imageId)
+  }, [])
+
+  const handleCloseModal = useCallback(() => {
+    setSelectedImageId(null)
+  }, [])
+
+  const handleImageSelect = useCallback((imageId: string) => {
+    setSelectedImageId(imageId)
+  }, [])
 
   return (
-    <main className="min-h-screen bg-black text-white p-24 font-mono">
-      <h1 className="text-3xl font-bold text-blue-500 mb-4">
-        Antigravity Stack 🪐
-      </h1>
-
-      <div className="p-6 border border-gray-800 rounded-xl bg-gray-900/50">
-        <h2 className="text-xl font-bold mb-2">Status Inisialisasi:</h2>
-        <ul className="list-disc pl-5 space-y-2 text-gray-400">
-          <li>
-            Folder <code>types</code>: <span className="text-green-400">Ready</span> (Placeholder)
-          </li>
-          <li>
-            Folder <code>hooks</code>: <span className="text-green-400">Ready</span> (Waiting for backend)
-          </li>
-          <li>
-            Backend: <span className="text-yellow-400">Empty (Clean Slate)</span>
-          </li>
-        </ul>
+    <main className="min-h-screen bg-black">
+      {/* Category Filter */}
+      <div className="sticky top-[65px] z-40 bg-black/80 backdrop-blur-xl border-b border-gray-800">
+        <div className="max-w-[1800px] mx-auto px-4 py-3">
+          <CategoryFilter
+            categories={categories}
+            selectedId={selectedCategory}
+            onSelect={setSelectedCategory}
+            loading={categoriesLoading}
+          />
+        </div>
       </div>
 
-      {/* Area untuk menampilkan data user nanti */}
-      <div className="mt-8">
-        <p className="text-sm text-gray-500">
-          {loading ? "Loading..." : `Jumlah User: ${users?.length || 0}`}
-        </p>
+      {/* Feed Content */}
+      <div className="max-w-[1800px] mx-auto px-4 py-6">
+        <MasonryGrid
+          images={images}
+          loading={loading}
+          loadingMore={loadingMore}
+          hasMore={hasMore}
+          onLoadMore={loadMore}
+          onImageClick={handleImageClick}
+        />
       </div>
+
+      {/* Cinema Mode Modal */}
+      <CinemaMode
+        imageId={selectedImageId}
+        onClose={handleCloseModal}
+        onImageSelect={handleImageSelect}
+      />
     </main>
   )
 }
