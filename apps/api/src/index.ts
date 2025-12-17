@@ -12,6 +12,7 @@ import { tagRoutes } from './tag'
 import { feedRoutes } from './feed'
 import { searchRoutes } from './search'
 import { bookmarkRoutes } from './bookmark'
+import { followRoutes } from './follow'
 
 const app = new Elysia({ prefix: '/api' })
   .use(
@@ -56,6 +57,7 @@ const app = new Elysia({ prefix: '/api' })
   .use(feedRoutes)
   .use(searchRoutes)
   .use(bookmarkRoutes)
+  .use(followRoutes)
   .listen(8080)
 
 console.log(`🦊 Server running at http://localhost:${app.server?.port}`)

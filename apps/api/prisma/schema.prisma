@@ -73,6 +73,8 @@ model User {
   comments           Comment[]
   likes              Like[]
   bookmarks          Bookmark[]
+  followers          Follow[] @relation("Following")
+  following          Follow[] @relation("Followers")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -322,4 +324,28 @@ model Bookmark {
   @@index([galleryId])
   @@index([imageId])
   @@map("bookmarks")
+}
+
+// ==========================================
+// FOLLOW (User-to-User)
+// ==========================================
+
+model Follow {
+  id String @id @default(uuid())
+
+  // User yang melakukan follow
+  followerId String
+  follower   User   @relation("Followers", fields: [followerId], references: [id], onDelete: Cascade)
+
+  // User yang di-follow
+  followingId String
+  following   User   @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  // Ensure user can only follow once per user
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("follows")
 }

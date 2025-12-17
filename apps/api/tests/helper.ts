@@ -10,6 +10,7 @@ import { commentRoutes } from '../src/comment'
 import { tagRoutes } from '../src/tag'
 import { searchRoutes } from '../src/search'
 import { bookmarkRoutes } from '../src/bookmark'
+import { followRoutes } from '../src/follow'
 import { prisma } from '../src/lib/prisma'
 
 /**
@@ -28,6 +29,7 @@ export function createTestApp() {
     .use(tagRoutes)
     .use(searchRoutes)
     .use(bookmarkRoutes)
+    .use(followRoutes)
 }
 
 /**
@@ -49,6 +51,7 @@ export const testUser2 = {
  * Clean up test data
  */
 export async function cleanupTestData() {
+  await prisma.follow.deleteMany({})
   await prisma.bookmark.deleteMany({})
   await prisma.comment.deleteMany({})
   await prisma.like.deleteMany({})
