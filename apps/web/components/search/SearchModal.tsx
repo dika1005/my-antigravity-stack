@@ -3,6 +3,7 @@
 import { useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useSearch } from '@/hooks/useSearch'
 import type { SearchType } from '@/lib/search'
 
@@ -18,6 +19,7 @@ interface SearchModalProps {
 export function SearchModal({ isOpen, onClose, onImageClick }: SearchModalProps) {
   const modalRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
   const {
     query,
     setQuery,
@@ -66,12 +68,12 @@ export function SearchModal({ isOpen, onClose, onImageClick }: SearchModalProps)
 
   const handleImageClick = useCallback(
     (imageId: string) => {
+      clearSearch()
       onClose()
-      if (onImageClick) {
-        setTimeout(() => onImageClick(imageId), 100)
-      }
+      // Navigate to dashboard with image query param to open CinemaMode
+      router.push(`/?image=${imageId}`)
     },
-    [onClose, onImageClick]
+    [onClose, clearSearch, router]
   )
 
   const handleClose = useCallback(() => {
@@ -269,6 +271,7 @@ export function SearchModal({ isOpen, onClose, onImageClick }: SearchModalProps)
                               width={40}
                               height={40}
                               className="w-full h-full object-cover"
+                              unoptimized
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-white font-medium">

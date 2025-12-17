@@ -1,11 +1,14 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { useFeed } from '@/hooks/useFeed'
 import { useCategories } from '@/hooks/useCategories'
 import { MasonryGrid, CategoryFilter, CinemaMode } from '@/components/feed'
 
 export default function Home() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedImageId, setSelectedImageId] = useState<string | null>(null)
   const { categories, loading: categoriesLoading } = useCategories()
@@ -13,6 +16,16 @@ export default function Home() {
     categoryId: selectedCategory || undefined,
     limit: 20,
   })
+
+  // Handle image query param from search
+  useEffect(() => {
+    const imageId = searchParams.get('image')
+    if (imageId) {
+      setSelectedImageId(imageId)
+      // Clear the query param without page reload
+      router.replace('/', { scroll: false })
+    }
+  }, [searchParams, router])
 
   const handleImageClick = useCallback((imageId: string) => {
     setSelectedImageId(imageId)
