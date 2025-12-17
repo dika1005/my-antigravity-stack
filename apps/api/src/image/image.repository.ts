@@ -41,6 +41,7 @@ export const imageRepository = {
             slug: true,
             userId: true,
             category: { select: { id: true, name: true, slug: true } },
+            _count: { select: { comments: true } },
           },
         },
         _count: { select: { likes: true, comments: true } },

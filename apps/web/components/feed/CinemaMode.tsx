@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useCallback, useState, useRef } from 'react'
 import Image from 'next/image'
 import { useImageDetail } from '@/hooks/useImageDetail'
-import { LikeButton, CommentSection } from '@/components/common'
+import { LikeButton, CommentSection, BookmarkButton } from '@/components/common'
 
 interface CinemaModeProps {
   imageId: string | null
@@ -218,9 +218,15 @@ export function CinemaMode({ imageId, onClose, onImageSelect }: CinemaModeProps)
                   >
                     <CommentIcon />
                     <span className={`text-sm font-medium ${showComments ? 'text-blue-400' : ''}`}>
-                      {image._count.comments}
+                      {image.gallery._count?.comments || 0}
                     </span>
                   </button>
+                  <BookmarkButton
+                    target="image"
+                    targetId={image.id}
+                    size="sm"
+                    variant="minimal"
+                  />
                   <span className="flex items-center gap-1">
                     <EyeIcon />
                     {image.viewCount}
@@ -269,7 +275,7 @@ export function CinemaMode({ imageId, onClose, onImageSelect }: CinemaModeProps)
                   </div>
                   <CommentSection
                     galleryId={image.gallery.id}
-                    initialCount={image._count.comments}
+                    initialCount={image.gallery._count?.comments || 0}
                   />
                 </div>
               </div>

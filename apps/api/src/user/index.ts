@@ -74,3 +74,32 @@ export const userRoutes = new Elysia({ prefix: '/user' })
       detail: { tags: ['User'], summary: 'Get user galleries' },
     }
   )
+  // Get my stats
+  .get(
+    '/me/stats',
+    async ({ user, set }) => {
+      if (!user) {
+        set.status = 401
+        return unauthorized()
+      }
+      const stats = await userRepository.getUserStats(user.id)
+      return success(stats)
+    },
+    {
+      requireAuth: true,
+      detail: { tags: ['User'], summary: 'Get my statistics' },
+    }
+  )
+  // Get user stats by ID
+  .get(
+    '/:id/stats',
+    async ({ params }) => {
+      const stats = await userRepository.getUserStats(params.id)
+      return success(stats)
+    },
+    {
+      params: t.Object({ id: t.String() }),
+      detail: { tags: ['User'], summary: 'Get user statistics' },
+    }
+  )
+

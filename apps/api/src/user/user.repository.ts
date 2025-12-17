@@ -85,4 +85,53 @@ export const userRepository = {
       },
     }
   },
+
+  /**
+   * Get user statistics: total likes received, comments, views
+   */
+  getUserStats: async (userId: string) => {
+    const [
+      totalImages,
+      totalLikesReceived,
+      totalLikesGiven,
+      totalCommentsReceived,
+      totalViews,
+    ] = await Promise.all([
+      // Total images uploaded
+      prisma.image.count({ where: { userId } }),
+      // Total likes received on user's images and galleries
+      prisma.like.count({
+        where: {
+          OR: [
+            { image: { userId } },
+            { gallery: { userId } },
+          ],
+        },
+      }),
+      // Total likes given by user
+      prisma.like.count({ where: { userId } }),
+      // Total comments received on user's images and galleries
+      prisma.comment.count({
+        where: {
+          OR: [
+            { image: { userId } },
+            { gallery: { userId } },
+          ],
+        },
+      }),
+      // Total views (sum of view counts)
+      prisma.image.aggregate({
+        where: { userId },
+        _sum: { viewCount: true },
+      }),
+    ])
+
+    return {
+      totalImages,
+      totalLikesReceived,
+      totalLikesGiven,
+      totalCommentsReceived,
+      totalViews: totalViews._sum.viewCount || 0,
+    }
+  },
 }

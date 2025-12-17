@@ -22,6 +22,9 @@ interface ImageDetail {
       name: string
       slug: string
     } | null
+    _count?: {
+      comments: number
+    }
   }
   user: {
     id: string
