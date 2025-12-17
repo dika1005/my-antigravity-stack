@@ -161,4 +161,78 @@ export interface BookmarkItem {
   } | null
 }
 
+// ==========================================
+// SEARCH TYPES
+// ==========================================
+
+export interface SearchGallery {
+  id: string
+  title: string
+  slug: string
+  description: string | null
+  coverImage: string | null
+  user: {
+    id: string
+    name: string | null
+    avatar: string | null
+  }
+  category: {
+    id: string
+    name: string
+    slug: string
+  } | null
+  _count: {
+    images: number
+    likes: number
+  }
+}
+
+export interface SearchImage {
+  id: string
+  title: string | null
+  description: string | null
+  url: string
+  thumbnailUrl: string | null
+  user: {
+    id: string
+    name: string | null
+    avatar: string | null
+  }
+  gallery: {
+    id: string
+    title: string
+    slug: string
+    category: {
+      id: string
+      name: string
+      slug: string
+    } | null
+  }
+  _count: {
+    likes: number
+  }
+}
+
+export interface SearchUser {
+  id: string
+  name: string | null
+  avatar: string | null
+  bio: string | null
+  _count: {
+    galleries: number
+  }
+}
+
+export interface SearchResults {
+  galleries: SearchGallery[]
+  images: SearchImage[]
+  users: SearchUser[]
+  total: {
+    galleries: number
+    images: number
+    users: number
+  }
+}
+
+
 

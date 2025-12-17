@@ -2,14 +2,15 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthContext } from '@/contexts'
+import { SearchModal } from '@/components/search'
 
 export function Navbar() {
   const { user, isAuthenticated, isLoading, logout } = useAuthContext()
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [searchFocused, setSearchFocused] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
@@ -39,6 +40,18 @@ export function Navbar() {
     setDropdownOpen(false)
     router.push('/')
   }
+
+  // Keyboard shortcut for search (Cmd/Ctrl + K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setSearchOpen(true)
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   return (
     <header
@@ -83,57 +96,32 @@ export function Navbar() {
 
           {/* Search Bar - Center */}
           <div className="hidden md:flex flex-1 max-w-xl mx-6 lg:mx-12">
-            <div
-              className={`
-                                relative w-full transition-all duration-300
-                                ${searchFocused ? 'scale-[1.02]' : 'scale-100'}
-                            `}
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="relative w-full text-left"
             >
               {/* Search Glow Effect */}
-              <div
-                className={`
-                                    absolute inset-0 rounded-2xl bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-pink-500/20 blur-xl transition-opacity duration-300
-                                    ${searchFocused ? 'opacity-100' : 'opacity-0'}
-                                `}
-              />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-violet-500/10 via-fuchsia-500/10 to-pink-500/10 blur-xl opacity-0 hover:opacity-100 transition-opacity duration-300" />
 
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search images, galleries, users..."
-                  onFocus={() => setSearchFocused(true)}
-                  onBlur={() => setSearchFocused(false)}
-                  className={`
-                                        w-full px-5 py-3 pl-12 rounded-2xl 
-                                        bg-white/[0.03] hover:bg-white/[0.06]
-                                        border border-white/[0.08] hover:border-white/[0.12]
-                                        text-white text-sm placeholder-gray-500
-                                        focus:outline-none focus:bg-white/[0.08] focus:border-violet-500/50
-                                        transition-all duration-300
-                                    `}
-                />
-                <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                  <SearchIcon
-                    className={`w-4 h-4 transition-colors duration-300 ${searchFocused ? 'text-violet-400' : 'text-gray-500'}`}
-                  />
-                </div>
+              <div className="relative flex items-center w-full px-5 py-3 pl-12 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/[0.12] transition-all duration-300">
+                <SearchIcon className="absolute left-4 w-4 h-4 text-gray-500" />
+                <span className="text-gray-500 text-sm">Search images, galleries, users...</span>
 
                 {/* Search shortcut hint */}
-                <div
-                  className={`absolute right-4 top-1/2 -translate-y-1/2 transition-opacity duration-300 ${searchFocused ? 'opacity-0' : 'opacity-100'}`}
-                >
-                  <kbd className="hidden lg:inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] text-gray-500 font-mono">
-                    ⌘K
-                  </kbd>
-                </div>
+                <kbd className="hidden lg:inline-flex items-center gap-1 ml-auto px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] text-gray-500 font-mono">
+                  ⌘K
+                </kbd>
               </div>
-            </div>
+            </button>
           </div>
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Mobile Search Button */}
-            <button className="md:hidden p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-200">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="md:hidden p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-200"
+            >
               <SearchIcon className="w-5 h-5" />
             </button>
 
@@ -316,6 +304,9 @@ export function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Search Modal */}
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   )
 }
